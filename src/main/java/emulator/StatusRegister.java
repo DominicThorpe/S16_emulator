@@ -33,16 +33,19 @@ public class StatusRegister {
      * @param signed True if the operation was signed, otherwise false
      */
     public void setFlagsForValue(int value, int expected, boolean signed) {
+        System.out.println("Here");
         resetFlags();
         if (value == 0) {
             zero = true;
-            return;
         }
 
-        if (value < 0) {
+        // set negative if value is negative or exceeds upper limit of a 2s-complement 16-bit number
+        // and operation is signed
+        if (signed && (value < 0 || value > 0x7FFF)) {
             negative = true;
         }
 
+        System.out.println("Expected: " + expected + "\tGot: " + value);
         if (value == expected) {
             return;
         }

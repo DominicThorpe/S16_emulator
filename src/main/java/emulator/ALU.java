@@ -35,11 +35,17 @@ public class ALU {
     public void executeInstruction(ALUOperation operation, Register destination, Register target, byte meta) {
         boolean high = (meta & 0b1000) != 0;
         boolean low = (meta & 0b0100) != 0;
+        boolean setFlags = (meta & 0b0010) != 0;
+        boolean signed = (meta & 0b0001) != 0;
         
         int argA = getOperand(destination, high, low); 
         int argB = getOperand(target, high, low);
-
+        
         int result = operation.performOperation(argA, argB);
+        System.out.println(argA + " - " + argB + " = " + result);
+        if (setFlags)
+            statusRegister.setFlagsForValue(result & 0xFFFF, result, signed);
+
         if (high && low)
             destination.setValue(result & 0xFFFF);
         else if (destination instanceof SplitRegister) {
@@ -64,15 +70,15 @@ public class ALU {
      * @return The value in the register
      */
     public int getOperand(Register register, boolean high, boolean low) {
+        if (high && low) // the whole contents
+            return register.getValue();
+
         // if destination is a split register get high and/or low byte depending on the flags
-        if (register instanceof SplitRegister) { 
+        else if (register instanceof SplitRegister) { 
             SplitRegister splitDest = (SplitRegister)register;
             return (high ? splitDest.getHighValue() : 0) | (low ? splitDest.getLowValue() : 0);
         } 
         
-        else if (high && low) // otherwise just get the whole contents
-            return register.getValue();
-
         return 0;
     }
 }
