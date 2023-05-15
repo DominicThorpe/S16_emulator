@@ -27,25 +27,25 @@ public class ControlUnit {
             case 0x0000: // No Operation
                 break;
             
-            case 0x0001:
-            case 0x0002:
+            case 0x0001: // Add
+            case 0x0002: // Add unsigned
                 cpu.alu.executeInstruction(new ALUOperations.AddOperation(), registerA, registerB, meta);
                 break;
                 
-            case 0x0004:
+            case 0x0004: // Increment
                 cpu.alu.executeInstruction(new ALUOperations.IncOperation(), registerA, registerB, meta);
                 break;
             
-            case 0x0005:
-            case 0x0006:
+            case 0x0005: // subtract
+            case 0x0006: // subtract unsigned
                 cpu.alu.executeInstruction(new ALUOperations.SubOperation(), registerA, registerB, meta);
                 break;
             
-            case 0x0008:
+            case 0x0008: // decrement
                 cpu.alu.executeInstruction(new ALUOperations.DecOperation(), registerA, registerB, meta);
                 break;
             
-            case 0x000A:
+            case 0x000A: // negate
                 cpu.alu.executeInstruction(new ALUOperations.NegOperation(), registerA, registerB, meta);
                 break;
             
@@ -57,17 +57,17 @@ public class ControlUnit {
                 cpu.setPC((short) (cpu.getPC() + 2)); // increment the PC by 2 more than usual
                 break;
             
-            case 0x0017:
-            case 0x0018:
+            case 0x0017: // multiply
+            case 0x0018: // multiply unsigned
                 cpu.alu.executeInstruction(new ALUOperations.MulOperation(), registerA, registerB, meta);
                 break;
 
-            case 0x0019:
-            case 0x001A:
+            case 0x0019: // divide
+            case 0x001A: // divide unsigned
                 cpu.alu.executeInstruction(new ALUOperations.DivOperation(), registerA, registerB, meta);
                 break;
             
-            case 0x003F:
+            case 0x003F: // halt and yield to operating system
                 break;
 
             default:
