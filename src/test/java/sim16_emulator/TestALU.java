@@ -19,7 +19,6 @@ public class TestALU
 
 
     private void setAndExecute(ALUOperation operation, int valueA, int valueB, boolean signed) {
-        System.out.println("A: " + valueA);
         registers.setRegister(0, valueA, true, true);
         registers.setRegister(1, valueB, true, true);
 
@@ -56,7 +55,7 @@ public class TestALU
 
         // testing signed addition negative no overflow
         setAndExecute(new ALUOperations.AddOperation(), -30, 10, true);
-        assertEquals(registers.getRegister(0, true, true), -20 & 0xFFFF);
+        assertEquals(registers.getRegister(0, true, true), -20);
         assertEquals(registers.getRegister(1, true, true), 10);
         assertFalse(alu.statusRegister.getCarry());
         assertFalse(alu.statusRegister.getZero());
@@ -65,21 +64,21 @@ public class TestALU
 
         // testing signed addition negative no overflow = -1
         setAndExecute(new ALUOperations.AddOperation(), -1, 0, true);
-        assertEquals(registers.getRegister(0, true, true), -1 & 0xFFFF);
+        assertEquals(registers.getRegister(0, true, true), -1);
         assertTrue(alu.statusRegister.getNegative());
 
         setAndExecute(new ALUOperations.AddOperation(), -2, 1, true);
-        assertEquals(registers.getRegister(0, true, true), -1 & 0xFFFF);
+        assertEquals(registers.getRegister(0, true, true), -1);
         assertTrue(alu.statusRegister.getNegative());
 
         setAndExecute(new ALUOperations.AddOperation(), 1, -2, true);
-        assertEquals(registers.getRegister(0, true, true), -1 & 0xFFFF);
+        assertEquals(registers.getRegister(0, true, true), -1);
         assertTrue(alu.statusRegister.getNegative());
 
         // testing unsigned addition no carry 
         setAndExecute(new ALUOperations.AddOperation(), 0xB300, 0x0F33, false);
-        assertEquals(registers.getRegister(0, true, true), 0xC233);
-        assertEquals(registers.getRegister(1, true, true), 0x0F33);
+        assertEquals(registers.getRegister(0, true, true), (short) 0xC233);
+        assertEquals(registers.getRegister(1, true, true), (short) 0x0F33);
         assertFalse(alu.statusRegister.getCarry());
         assertFalse(alu.statusRegister.getZero());
         assertFalse(alu.statusRegister.getOverflow());
@@ -87,8 +86,8 @@ public class TestALU
 
         // testing unsigned addition with carry 
         setAndExecute(new ALUOperations.AddOperation(), 0xB333, 0x8555, false);
-        assertEquals(registers.getRegister(0, true, true), 0x3888);
-        assertEquals(registers.getRegister(1, true, true), 0x8555);
+        assertEquals(registers.getRegister(0, true, true), (short) 0x3888);
+        assertEquals(registers.getRegister(1, true, true), (short) 0x8555);
         assertTrue(alu.statusRegister.getCarry());
         assertFalse(alu.statusRegister.getZero());
         assertFalse(alu.statusRegister.getOverflow());
@@ -155,7 +154,7 @@ public class TestALU
 
         // testing signed subtraction negative no overflow
         setAndExecute(new ALUOperations.SubOperation(), 30, 40, true);
-        assertEquals(registers.getRegister(0, true, true), -10 & 0xFFFF);
+        assertEquals(registers.getRegister(0, true, true), -10);
         assertEquals(registers.getRegister(1, true, true), 40);
         assertFalse(alu.statusRegister.getCarry());
         assertFalse(alu.statusRegister.getZero());
@@ -164,8 +163,8 @@ public class TestALU
 
         // testing unsigned subtraction no carry 
         setAndExecute(new ALUOperations.SubOperation(), 0xB300, 0x0F33, false);
-        assertEquals(registers.getRegister(0, true, true), 0xA3CD);
-        assertEquals(registers.getRegister(1, true, true), 0x0F33);
+        assertEquals(registers.getRegister(0, true, true), (short) 0xA3CD);
+        assertEquals(registers.getRegister(1, true, true), (short) 0x0F33);
         assertFalse(alu.statusRegister.getCarry());
         assertFalse(alu.statusRegister.getZero());
         assertFalse(alu.statusRegister.getOverflow());
@@ -173,8 +172,8 @@ public class TestALU
 
         // testing unsigned subtraction with carry 
         setAndExecute(new ALUOperations.SubOperation(), -30000, 20000, false);
-        assertEquals(registers.getRegister(0, true, true), 0x3CB0);
-        assertEquals(registers.getRegister(1, true, true), 20000 & 0xFFFF);
+        assertEquals(registers.getRegister(0, true, true), (short) 0x3CB0);
+        assertEquals(registers.getRegister(1, true, true), 20000);
         assertTrue(alu.statusRegister.getCarry());
         assertFalse(alu.statusRegister.getZero());
         assertFalse(alu.statusRegister.getOverflow());
@@ -202,7 +201,7 @@ public class TestALU
         
         // decrement with carry
         setAndExecute(new ALUOperations.DecOperation(), 0, 0, false);
-        assertEquals(registers.getRegister(0, true, true), 65535);
+        assertEquals(registers.getRegister(0, true, true), (short) 0xFFFF);
         assertEquals(registers.getRegister(1, true, true), 0);
         assertTrue(alu.statusRegister.getCarry());
         assertFalse(alu.statusRegister.getZero());

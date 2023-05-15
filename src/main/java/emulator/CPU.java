@@ -27,7 +27,7 @@ public class CPU {
     public final ALU alu = new ALU();
     
     private Register instrRegister = new Register();
-    private int programCounter = ram.code_section;
+    private short programCounter = ram.code_section;
 
 
     /**
@@ -41,7 +41,7 @@ public class CPU {
         readFileToRAM(sourceFile);
 
         while (programCounter < 0xC000) {
-            instrRegister.setValue(ram.getValue(programCounter) << 8 | ram.getValue(programCounter + 1) & 0x00FF);
+            instrRegister.setValue((short) (ram.getValue(programCounter) << 8 | ram.getValue((short) (programCounter + 1)) & 0x00FF));
             if ((instrRegister.getValue() & 0xFC00) == 0xFC00) { // break loop if HALT detected
                 break;
             }
@@ -82,7 +82,7 @@ public class CPU {
      */
     private void readFileToRAM(String filename) {
         Path path = Paths.get(filename);
-        int positionInRAM = ram.data_section; // start at the data section
+        short positionInRAM = ram.data_section; // start at the data section
 
         try {
             byte[] bytes = Files.readAllBytes(path);
@@ -123,7 +123,7 @@ public class CPU {
      * Sets the value of the program counter
      * @param value New value of the PC
      */
-    public void setPC(int value) {
+    public void setPC(short value) {
         programCounter = value;
     }
 }

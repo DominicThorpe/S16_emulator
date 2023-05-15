@@ -11,8 +11,8 @@ public class SplitRegister extends Register {
      * Gets the upper 8 bits of the value in the register
      * @return 8 bit value, does not shift result down
      */
-    public int getHighValue() {
-        return value & 0xFF00;
+    public short getHighValue() {
+        return (short) (value & 0xFF00);
     }
 
 
@@ -20,8 +20,8 @@ public class SplitRegister extends Register {
      * Sets the upper 8 bits of the value of the register to the new value
      * @param newValue The new value of the upper 8 bits, remaining bits in the new value are discarded
      */
-    public void setHighValue(int newValue) {
-        this.value = (newValue << 8) | (this.value & 0xFF);
+    public void setHighValue(short newValue) {
+        this.value = (short) ((newValue << 8) | (this.value & 0xFF));
     }
 
 
@@ -29,15 +29,15 @@ public class SplitRegister extends Register {
      * Gets the lower 8 bits of the value in the register
      * @return 8 bit value
      */
-    public int getLowValue() {
-        return value & 0x00FF;
+    public short getLowValue() {
+        return (short) (value & 0x00FF);
     }
 
     /**
      * Sets the lower 8 bits of the value of the register to the new value
      * @param newValue The new value of the lower 8 bits, remaining bits in the new value are discarded
      */
-    public void setLowValue(int newValue) {
-        this.value = newValue | (this.value & 0xFF00);
+    public void setLowValue(short newValue) {
+        this.value = (short) (newValue | (this.value & 0xFF00));
     }
 }

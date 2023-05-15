@@ -50,10 +50,11 @@ public class ControlUnit {
                 break;
             
             case 0x0016: // Move immediate
-                int immediate = cpu.ram.getValue(cpu.getPC() + 2) << 8 | cpu.ram.getValue(cpu.getPC() + 3);
+                int immediate = cpu.ram.getValue((short) (cpu.getPC() + 2)) << 8 
+                                 | cpu.ram.getValue((short) (cpu.getPC() + 3));
                 cpu.regFile.setRegister(operandA, immediate, true, true);
 
-                cpu.setPC(cpu.getPC() + 2); // increment the PC by 2 more than usual
+                cpu.setPC((short) (cpu.getPC() + 2)); // increment the PC by 2 more than usual
                 break;
             
             case 0x0017:

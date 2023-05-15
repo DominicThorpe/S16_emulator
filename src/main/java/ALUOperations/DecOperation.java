@@ -5,7 +5,10 @@ package ALUOperations;
  */
 public class DecOperation implements ALUOperation {
     @Override
-    public int performOperation(int operandA, int operandB) {
-        return operandA - 1;
+    public OperationResult performOperation(int operandA, int operandB) {
+        int result = operandA - 1;
+        if (operandA == 0) // will overflow if decrementing 0
+            return new OperationResult((short)result, true);
+        return new OperationResult((short)result, false);
     }
 }

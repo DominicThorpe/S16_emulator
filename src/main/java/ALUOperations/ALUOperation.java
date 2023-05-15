@@ -10,5 +10,5 @@ public interface ALUOperation {
      * @param operandB The second operand
      * @return The result of the operation
      */
-    int performOperation(int operandA, int operandB);
+    OperationResult performOperation(int operandA, int operandB);
 }

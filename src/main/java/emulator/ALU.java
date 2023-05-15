@@ -38,23 +38,23 @@ public class ALU {
         boolean setFlags = (meta & 0b0010) != 0;
         boolean signed = (meta & 0b0001) != 0;
         
-        int argA = getOperand(destination, high, low); 
-        int argB = getOperand(target, high, low);
+        short argA = getOperand(destination, high, low); 
+        short argB = getOperand(target, high, low);
         
-        int result = operation.performOperation(argA, argB);
-        System.out.println(argA + " - " + argB + " = " + result);
+        ALUOperations.OperationResult result = operation.performOperation(argA, argB);
+        short shortResult = result.result;
         if (setFlags)
-            statusRegister.setFlagsForValue(result & 0xFFFF, result, signed);
+            statusRegister.setFlagsForValue(result, signed);
 
         if (high && low)
-            destination.setValue(result & 0xFFFF);
+            destination.setValue(shortResult);
         else if (destination instanceof SplitRegister) {
             SplitRegister splitDest = (SplitRegister)destination;
 
             if (high)
-                splitDest.setHighValue(result);
+                splitDest.setHighValue(shortResult);
             else if (low)
-                splitDest.setLowValue(result);
+                splitDest.setLowValue(shortResult);
         }
     }
 
@@ -69,14 +69,14 @@ public class ALU {
      * @param low True if the low byte should be read
      * @return The value in the register
      */
-    public int getOperand(Register register, boolean high, boolean low) {
+    public short getOperand(Register register, boolean high, boolean low) {
         if (high && low) // the whole contents
             return register.getValue();
 
         // if destination is a split register get high and/or low byte depending on the flags
         else if (register instanceof SplitRegister) { 
             SplitRegister splitDest = (SplitRegister)register;
-            return (high ? splitDest.getHighValue() : 0) | (low ? splitDest.getLowValue() : 0);
+            return (short) ((high ? splitDest.getHighValue() : 0) | (low ? splitDest.getLowValue() : 0));
         } 
         
         return 0;

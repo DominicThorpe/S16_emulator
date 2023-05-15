@@ -5,7 +5,12 @@ package ALUOperations;
  */
 public class MulOperation implements ALUOperation {
     @Override
-    public int performOperation(int operandA, int operandB) {
-        return operandA * operandB;
+    public OperationResult performOperation(int operandA, int operandB) {
+        try {
+            int result = Math.multiplyExact(operandA, operandB);
+            return new OperationResult((short) result, false);
+        } catch (ArithmeticException e) {
+            return new OperationResult((short) (operandA * operandB), true);
+        }
     }
 }

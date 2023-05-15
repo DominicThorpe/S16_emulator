@@ -6,9 +6,9 @@ package emulator;
  */
 public class RAM {
     /** Starting address of the data section */
-    public final int data_section = 0x5800;
+    public final short data_section = 0x5800;
     /** Starting address of the code section */
-    public final int code_section = 0x9000;
+    public final short code_section = (short)0x9000;
 
     private byte[] memory = new byte[0xFFFF];
 
@@ -18,7 +18,7 @@ public class RAM {
      * @param address The address to get
      * @return The byte at that value
      */
-    public byte getValue(int address) {
+    public byte getValue(short address) {
         return this.memory[address];
     }
 
@@ -28,7 +28,7 @@ public class RAM {
      * @param address The address to set
      * @param value The new value
      */
-    public void setValue(int address, byte value) {
+    public void setValue(short address, byte value) {
         this.memory[address] = value;
     }
 

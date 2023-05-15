@@ -6,7 +6,10 @@ package ALUOperations;
  */
 public class AddOperation implements ALUOperation {
     @Override
-    public int performOperation(int operandA, int operandB) {
-        return operandA + operandB;
+    public OperationResult performOperation(int operandA, int operandB) {
+        int result = operandA + operandB;
+        if (result < Short.MIN_VALUE || result > Short.MAX_VALUE)
+            return new OperationResult((short) (operandA + operandB), true);
+        return new OperationResult((short) (operandA + operandB), false);
     }
 }

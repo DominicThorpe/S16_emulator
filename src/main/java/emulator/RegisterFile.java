@@ -25,9 +25,9 @@ public class RegisterFile {
         registers[7] = new Register(); // sp
 
         // set the frame, base, and stack pointers to the top of the stack at 0xFFFF
-        registers[5].setValue(0xFFFF);
-        registers[6].setValue(0xFFFF);
-        registers[7].setValue(0xFFFF);
+        registers[5].setValue((short)0xFFFF);
+        registers[6].setValue((short)0xFFFF);
+        registers[7].setValue((short)0xFFFF);
     }
 
 
@@ -75,15 +75,15 @@ public class RegisterFile {
         // if the high and low registers are set, or the register is not a split register
         // load the whole value
         if ((high && low) || !(register instanceof SplitRegister)) {
-            register.setValue(newValue);
+            register.setValue((short)newValue);
             return;
         }
 
         SplitRegister splitRegister = (SplitRegister)register;
         if (high) {
-            splitRegister.setHighValue(newValue);
+            splitRegister.setHighValue((short)newValue);
         } else if (low) {
-            splitRegister.setLowValue(newValue);
+            splitRegister.setLowValue((short)newValue);
         }
     }
 

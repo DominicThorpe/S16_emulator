@@ -1,5 +1,7 @@
 package emulator;
 
+import ALUOperations.OperationResult;
+
 /**
  * Represents the status register held within the ALU, but also has the interrupt flag
  */
@@ -32,29 +34,22 @@ public class StatusRegister {
      * @param expected The value if there is no overflow
      * @param signed True if the operation was signed, otherwise false
      */
-    public void setFlagsForValue(int value, int expected, boolean signed) {
-        System.out.println("Here");
+    public void setFlagsForValue(OperationResult value, boolean signed) {
         resetFlags();
-        if (value == 0) {
+        if (value.result == 0) {
             zero = true;
         }
 
         // set negative if value is negative or exceeds upper limit of a 2s-complement 16-bit number
         // and operation is signed
-        if (signed && (value < 0 || value > 0x7FFF)) {
+        if (signed && (value.result < 0 || value.result > 0x7FFF)) {
             negative = true;
         }
 
-        System.out.println("Expected: " + expected + "\tGot: " + value);
-        if (value == expected) {
-            return;
-        }
-
-        if (signed) {
+        if (value.overflow && signed)
             overflow = true;
-        } else {
+        else if (value.overflow)
             carry = true;
-        }
     }
 
 

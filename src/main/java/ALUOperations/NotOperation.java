@@ -5,7 +5,7 @@ package ALUOperations;
  */
 public class NotOperation implements ALUOperation {
     @Override
-    public int performOperation(int operandA, int operandB) {
-        return ~operandA;
+    public OperationResult performOperation(int operandA, int operandB) {
+        return new OperationResult((short) ~operandA, false);
     }
 }
