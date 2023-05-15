@@ -6,7 +6,7 @@ The microprocessor still needs the following instructions to be implemented:
  - Add carry
  - Subtract carry
  - Sign extension
- - Logical and, or, xor, complement
+ - Logical xor
  - logical and arithmetic left and right shifts
  - Integer comparisons
  - Push and pop stack

@@ -67,6 +67,18 @@ public class ControlUnit {
                 cpu.alu.executeInstruction(new ALUOperations.DivOperation(), registerA, registerB, meta);
                 break;
             
+            case 0x001C: // complement
+                cpu.alu.executeInstruction(new ALUOperations.NotOperation(), registerA, registerB, meta);
+                break;
+
+            case 0x001D: // logical AND
+                cpu.alu.executeInstruction(new ALUOperations.AndOperation(), registerA, registerB, meta);
+                break;
+
+            case 0x001E: // logical OR
+                cpu.alu.executeInstruction(new ALUOperations.OrOperation(), registerA, registerB, meta);
+                break;
+            
             case 0x003F: // halt and yield to operating system
                 break;
 
