@@ -289,4 +289,61 @@ public class TestALU
         assertEquals(registers.getRegister(0, true, true), 0);
         assertTrue(alu.statusRegister.getZero());
     }
+
+    @Test
+    public void testShiftLeftLogical() {
+        // result non-zero
+        setAndExecute(new ALUOperations.SllOperation(), 100, 2, false);
+        assertEquals(registers.getRegister(0, true, true), 400);
+        assertFalse(alu.statusRegister.getCarry());
+        assertFalse(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+
+        // result zero
+        setAndExecute(new ALUOperations.SllOperation(), 100, 15, false);
+        assertEquals(registers.getRegister(0, true, true), 0);
+        assertFalse(alu.statusRegister.getCarry());
+        assertTrue(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+    }
+
+    @Test
+    public void testShiftRightLogical() {
+        // result non-zero
+        setAndExecute(new ALUOperations.SrlOperation(), 100, 2, false);
+        assertEquals(registers.getRegister(0, true, true), 25);
+        assertFalse(alu.statusRegister.getCarry());
+        assertFalse(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+
+        // result zero
+        setAndExecute(new ALUOperations.SrlOperation(), 100, 8, false);
+        assertEquals(registers.getRegister(0, true, true), 0);
+        assertFalse(alu.statusRegister.getCarry());
+        assertTrue(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+    }
+
+    @Test
+    public void testShiftRightArithmetic() {
+        // result non-zero
+        setAndExecute(new ALUOperations.SraOperation(), -100, 2, false);
+        assertEquals(registers.getRegister(0, true, true), -25);
+        assertFalse(alu.statusRegister.getCarry());
+        assertFalse(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+
+        // result zero
+        setAndExecute(new ALUOperations.SraOperation(), -100, 8, false);
+        assertEquals(registers.getRegister(0, true, true), -1);
+        assertFalse(alu.statusRegister.getCarry());
+        assertFalse(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+    }
 }
