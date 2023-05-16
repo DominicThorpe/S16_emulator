@@ -367,4 +367,82 @@ public class TestALU
         assertFalse(alu.statusRegister.getOverflow());
         assertFalse(alu.statusRegister.getNegative());
     }
+
+    @Test
+    public void testAluMultiplication() {
+        // test signed multiplication positive no overflow
+        setAndExecute(new ALUOperations.MulOperation(), 100, 8, true);
+        assertEquals(registers.getRegister(0, true, true), 800);
+        assertFalse(alu.statusRegister.getCarry());
+        assertFalse(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+
+        // test signed multiplication zero
+        setAndExecute(new ALUOperations.MulOperation(), 100, 0, true);
+        assertEquals(registers.getRegister(0, true, true), 0);
+        assertTrue(alu.statusRegister.getZero());
+
+        // test signed multiplication negative no overflow
+        setAndExecute(new ALUOperations.MulOperation(), -100, 10, true);
+        assertEquals(registers.getRegister(0, true, true), -1000);
+        assertTrue(alu.statusRegister.getNegative());
+
+        // test unsigned multiplication positive
+        setAndExecute(new ALUOperations.MulOperation(), 100, 8, false);
+        assertEquals(registers.getRegister(0, true, true), 800);
+        assertFalse(alu.statusRegister.getCarry());
+        assertFalse(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+
+        // test unsigned multiplication zero
+        setAndExecute(new ALUOperations.MulOperation(), 100, 0, false);
+        assertEquals(registers.getRegister(0, true, true), 0);
+        assertTrue(alu.statusRegister.getZero());
+
+        // test unsigned multiplication carry
+        setAndExecute(new ALUOperations.MulOperation(), -100, 10, false);
+        assertEquals(registers.getRegister(0, true, true), (short) 0xFC18);
+        assertFalse(alu.statusRegister.getNegative());
+    }
+
+    @Test
+    public void testAluDivision() {
+        // test signed division no overflow
+        setAndExecute(new ALUOperations.DivOperation(), 100, 5, true);
+        assertEquals(registers.getRegister(0, true, true), 20);
+        assertFalse(alu.statusRegister.getCarry());
+        assertFalse(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+
+        // test signed division negative dividend
+        setAndExecute(new ALUOperations.DivOperation(), -100, 5, true);
+        assertEquals(registers.getRegister(0, true, true), -20);
+        assertTrue(alu.statusRegister.getNegative());
+
+        // test signed division negative divisor
+        setAndExecute(new ALUOperations.DivOperation(), 100, -5, true);
+        assertEquals(registers.getRegister(0, true, true), -20);
+        assertTrue(alu.statusRegister.getNegative());
+
+        // test unsigned division no overflow
+        setAndExecute(new ALUOperations.DivOperation(), 100, 5, false);
+        assertEquals(registers.getRegister(0, true, true), 20);
+        assertFalse(alu.statusRegister.getCarry());
+        assertFalse(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+
+        // test unsigned division negative dividend
+        setAndExecute(new ALUOperations.DivOperation(), -100, 5, false);
+        assertEquals(registers.getRegister(0, true, true), (short) 0xFFEC);
+        assertFalse(alu.statusRegister.getNegative());
+
+        // test unsigned division negative divisor
+        setAndExecute(new ALUOperations.DivOperation(), 100, -5, false);
+        assertEquals(registers.getRegister(0, true, true), (short) 0xFFEC);
+        assertFalse(alu.statusRegister.getNegative());
+    }
 }
