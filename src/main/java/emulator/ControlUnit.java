@@ -79,6 +79,22 @@ public class ControlUnit {
                 cpu.alu.executeInstruction(new ALUOperations.OrOperation(), registerA, registerB, meta);
                 break;
             
+            case 0x001F: // logical XOR
+                cpu.alu.executeInstruction(new ALUOperations.XorOperation(), registerA, registerB, meta);
+                break;
+            
+            case 0x0020: // Shift right arithmetic
+                cpu.alu.executeInstruction(new ALUOperations.SraOperation(), registerA, registerB, meta);
+                break;
+
+            case 0x0021: // Shift left logical
+                cpu.alu.executeInstruction(new ALUOperations.SrlOperation(), registerA, registerB, meta);
+                break;
+
+            case 0x0022: // Shift right logical
+                cpu.alu.executeInstruction(new ALUOperations.SllOperation(), registerA, registerB, meta);
+                break;
+            
             case 0x003F: // halt and yield to operating system
                 break;
 

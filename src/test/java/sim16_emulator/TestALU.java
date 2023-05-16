@@ -291,6 +291,27 @@ public class TestALU
     }
 
     @Test
+    public void testAluXor() {
+        // result positive
+        setAndExecute(new ALUOperations.XorOperation(), 0xAAAA, 0xFFFF, true);
+        assertEquals(registers.getRegister(0, true, true), (short) 0x5555);
+        assertFalse(alu.statusRegister.getCarry());
+        assertFalse(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+
+        // result negative
+        setAndExecute(new ALUOperations.XorOperation(), 0x5555, 0xFF00, true);
+        assertEquals(registers.getRegister(0, true, true), (short) 0xAA55);
+        assertTrue(alu.statusRegister.getNegative());
+
+        // result zero
+        setAndExecute(new ALUOperations.XorOperation(), 0xFFFF, 0xFFFF, true);
+        assertEquals(registers.getRegister(0, true, true), 0);
+        assertTrue(alu.statusRegister.getZero());
+    }
+
+    @Test
     public void testShiftLeftLogical() {
         // result non-zero
         setAndExecute(new ALUOperations.SllOperation(), 100, 2, false);
