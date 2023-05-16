@@ -5,7 +5,6 @@ The S16 emulator is an emulator written in Java for a custom microprocessor arch
 The microprocessor still needs the following instructions to be implemented:
  - Add carry
  - Subtract carry
- - Sign extension
  - Integer comparisons
  - Push and pop stack
  - Swap register values
