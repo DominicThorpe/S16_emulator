@@ -11,7 +11,7 @@ import ALUOperations.ALUOperation;
  */
 public class ALU {
     /** The CPU status register contained within the ALU */
-    public final StatusRegister statusRegister = new StatusRegister();
+    public static final StatusRegister statusRegister = new StatusRegister();
 
 
     /**
@@ -43,7 +43,6 @@ public class ALU {
         
         ALUOperations.OperationResult result = operation.performOperation(argA, argB);
         short shortResult = result.result;
-        System.out.println(shortResult);
         if (setFlags)
             statusRegister.setFlagsForValue(result, signed);
 

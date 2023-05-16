@@ -31,6 +31,10 @@ public class ControlUnit {
             case 0x0002: // Add unsigned
                 cpu.alu.executeInstruction(new ALUOperations.AddOperation(), registerA, registerB, meta);
                 break;
+            
+            case 0x0003: // Add carry
+                cpu.alu.executeInstruction(new ALUOperations.AddCarryOperation(), registerA, registerB, meta);
+                break;
                 
             case 0x0004: // Increment
                 cpu.alu.executeInstruction(new ALUOperations.IncOperation(), registerA, registerB, meta);
@@ -39,6 +43,10 @@ public class ControlUnit {
             case 0x0005: // subtract
             case 0x0006: // subtract unsigned
                 cpu.alu.executeInstruction(new ALUOperations.SubOperation(), registerA, registerB, meta);
+                break;
+
+            case 0x0007: // Sub carry
+                cpu.alu.executeInstruction(new ALUOperations.SubCarryOperation(), registerA, registerB, meta);
                 break;
             
             case 0x0008: // decrement
