@@ -101,6 +101,7 @@ public class CPU {
                 }
 
                 // insert the value into RAM and increment the address to write to
+                System.out.println(String.format("0x%04X", positionInRAM));
                 this.ram.setValue(positionInRAM, bytes[i]);
                 positionInRAM++;
             }

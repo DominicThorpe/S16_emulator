@@ -57,9 +57,22 @@ public class ControlUnit {
                 cpu.alu.executeInstruction(new ALUOperations.NegOperation(), registerA, registerB, meta);
                 break;
             
+            case 0x000B: // move
+                registerA.setValue(registerB.getValue());
+                break;
+            
+            case 0x0012: // swap
+                System.out.println(String.format("Swapping %d for %d", registerA.getValue(), registerB.getValue()));
+                short old = registerB.getValue();
+                registerB.setValue(registerA.getValue());
+                registerA.setValue(old);
+                break;
+            
             case 0x0016: // Move immediate
-                int immediate = cpu.ram.getValue((short) (cpu.getPC() + 2)) << 8 
-                                 | cpu.ram.getValue((short) (cpu.getPC() + 3));
+                short immediate = (short) (
+                    cpu.ram.getValue((short) (cpu.getPC() + 2)) << 8
+                     | (cpu.ram.getValue((short) (cpu.getPC() + 3)) & 0x00FF)
+                );
                 cpu.regFile.setRegister(operandA, immediate, true, true);
 
                 cpu.setPC((short) (cpu.getPC() + 2)); // increment the PC by 2 more than usual
@@ -101,6 +114,10 @@ public class ControlUnit {
 
             case 0x0022: // Shift right logical
                 cpu.alu.executeInstruction(new ALUOperations.SllOperation(), registerA, registerB, meta);
+                break;
+
+            case 0x0023: // Clear register
+                registerA.setValue((short) 0);
                 break;
             
             case 0x0027: // Sign extend lower byte

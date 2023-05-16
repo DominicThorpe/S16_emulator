@@ -19,7 +19,7 @@ public class RAM {
      * @return The byte at that value
      */
     public byte getValue(short address) {
-        return this.memory[address];
+        return this.memory[(int)address & 0xFFFF];
     }
 
 
@@ -29,7 +29,7 @@ public class RAM {
      * @param value The new value
      */
     public void setValue(short address, byte value) {
-        this.memory[address] = value;
+        this.memory[(int)address & 0xFFFF] = value;
     }
 
 

@@ -2,3 +2,4 @@ target
 .vscode
 
 *.sse
+!src/test/sse/*.sse

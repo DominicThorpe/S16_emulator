@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import emulator.CPU;
 import emulator.RegisterFile;
 
 /**
@@ -28,22 +29,22 @@ public class TestRegisters {
     public void testSetWholeValues() {
         RegisterFile registerFile = new RegisterFile();
 
-        registerFile.setRegister(0, 20, true, true);
+        registerFile.setRegister(0, (short) 20, true, true);
         assertEquals(registerFile.getRegister(0, true, true), 20);
 
-        registerFile.setRegister(0, -20, true, true);
+        registerFile.setRegister(0, (short) -20, true, true);
         assertEquals(registerFile.getRegister(0, true, true), -20);
 
-        registerFile.setRegister(0, 32767, true, true);
+        registerFile.setRegister(0, (short) 32767, true, true);
         assertEquals(registerFile.getRegister(0, true, true), 32767);
 
-        registerFile.setRegister(0, 32768, true, true);
+        registerFile.setRegister(0, (short) 32768, true, true);
         assertEquals(registerFile.getRegister(0, true, true), -32768);
 
-        registerFile.setRegister(0, -32768, true, true);
+        registerFile.setRegister(0, (short) -32768, true, true);
         assertEquals(registerFile.getRegister(0, true, true), -32768);
 
-        registerFile.setRegister(0, -32769, true, true);
+        registerFile.setRegister(0, (short) -32769, true, true);
         assertEquals(registerFile.getRegister(0, true, true), 32767);
     }
 
@@ -51,22 +52,31 @@ public class TestRegisters {
     public void testSetSplitRegisters() {
         RegisterFile registerFile = new RegisterFile();
 
-        registerFile.setRegister(0, 20, false, true);
+        registerFile.setRegister(0, (short) 20, false, true);
         assertEquals(registerFile.getRegister(0, false, true), 20);
 
-        registerFile.setRegister(0, -20, false, true);
+        registerFile.setRegister(0, (short) -20, false, true);
         assertEquals((byte)registerFile.getRegister(0, false, true), -20);
 
-        registerFile.setRegister(0, 127, false, true);
+        registerFile.setRegister(0, (short) 127, false, true);
         assertEquals(registerFile.getRegister(0, false, true), 127);
 
-        registerFile.setRegister(0, 128, false, true);
+        registerFile.setRegister(0, (short) 128, false, true);
         assertEquals((byte)registerFile.getRegister(0, false, true), -128);
 
-        registerFile.setRegister(0, -128, false, true);
+        registerFile.setRegister(0, (short) -128, false, true);
         assertEquals((byte)registerFile.getRegister(0, false, true), -128);
 
-        registerFile.setRegister(0, -129, false, true);
+        registerFile.setRegister(0, (short) -129, false, true);
         assertEquals(registerFile.getRegister(0, false, true), 127);
+    }
+
+    @Test
+    public void testMoveSwapClear() {
+        CPU cpu = new CPU("src/test/sse/test_reg_instrs.sse");
+        assertEquals(cpu.regFile.getRegister(0, true, true), 500);
+        assertEquals(cpu.regFile.getRegister(1, true, true), 10000);
+        assertEquals(cpu.regFile.getRegister(2, true, true), 10000);
+        assertEquals(cpu.regFile.getRegister(3, true, true), 0);
     }
 }

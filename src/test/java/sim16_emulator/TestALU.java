@@ -19,8 +19,8 @@ public class TestALU
 
 
     private void setAndExecute(ALUOperation operation, int valueA, int valueB, boolean signed) {
-        registers.setRegister(0, valueA, true, true);
-        registers.setRegister(1, valueB, true, true);
+        registers.setRegister(0, (short) valueA, true, true);
+        registers.setRegister(1, (short) valueB, true, true);
 
         alu.executeInstruction(
             operation, 

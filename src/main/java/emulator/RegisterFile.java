@@ -69,7 +69,7 @@ public class RegisterFile {
      * @param high True if setting the upper 8 bits is desired
      * @param low True if setting the lower 8 bits is desired
      */
-    public void setRegister(int registerIndex, int newValue, boolean high, boolean low) {
+    public void setRegister(int registerIndex, short newValue, boolean high, boolean low) {
         Register register = registers[registerIndex];
 
         // if the high and low registers are set, or the register is not a split register
@@ -81,9 +81,9 @@ public class RegisterFile {
 
         SplitRegister splitRegister = (SplitRegister)register;
         if (high) {
-            splitRegister.setHighValue((short)newValue);
+            splitRegister.setHighValue(newValue);
         } else if (low) {
-            splitRegister.setLowValue((short)newValue);
+            splitRegister.setLowValue(newValue);
         }
     }
 
