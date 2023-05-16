@@ -95,6 +95,10 @@ public class ControlUnit {
                 cpu.alu.executeInstruction(new ALUOperations.SllOperation(), registerA, registerB, meta);
                 break;
             
+            case 0x0027: // Sign extend lower byte
+                cpu.alu.executeInstruction(new ALUOperations.SignExtOperation(), registerA, registerB, meta);
+                break;
+            
             case 0x003F: // halt and yield to operating system
                 break;
 

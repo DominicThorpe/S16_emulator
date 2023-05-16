@@ -43,6 +43,7 @@ public class ALU {
         
         ALUOperations.OperationResult result = operation.performOperation(argA, argB);
         short shortResult = result.result;
+        System.out.println(shortResult);
         if (setFlags)
             statusRegister.setFlagsForValue(result, signed);
 

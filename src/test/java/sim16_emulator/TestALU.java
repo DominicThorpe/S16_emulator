@@ -445,4 +445,20 @@ public class TestALU
         assertEquals(registers.getRegister(0, true, true), (short) 0xFFEC);
         assertFalse(alu.statusRegister.getNegative());
     }
+
+    @Test
+    public void testSignExtension() {
+        // test sign extend positive
+        setAndExecute(new ALUOperations.SignExtOperation(), 0xF755, 0, true);
+        assertEquals(registers.getRegister(0, true, true), (short) 0x0055);
+        assertFalse(alu.statusRegister.getCarry());
+        assertFalse(alu.statusRegister.getZero());
+        assertFalse(alu.statusRegister.getOverflow());
+        assertFalse(alu.statusRegister.getNegative());
+
+        // test sign extend negative
+        setAndExecute(new ALUOperations.SignExtOperation(), 0x55D5, 0, true);
+        assertEquals(registers.getRegister(0, true, true), (short) 0xFFD5);
+        assertTrue(alu.statusRegister.getNegative());
+    }
 }
