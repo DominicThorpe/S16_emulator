@@ -1,5 +1,7 @@
 package emulator;
 
+import ALUOperations.OperationResult;
+
 /**
  * Represents the control unit of the CPU which is responsible for coordinating the processor and 
  * handling the different opcodes.
@@ -53,6 +55,12 @@ public class ControlUnit {
                 cpu.alu.executeInstruction(new ALUOperations.DecOperation(), registerA, registerB, meta);
                 break;
             
+            case 0x0009: // compare and set flags, do not mutate registers
+                OperationResult result = new ALUOperations.SubOperation().performOperation(registerA.getValue(), registerB.getValue());
+                System.out.println("Result: " + result.result);
+                ALU.statusRegister.setFlagsForValue(result, true);
+                break;
+            
             case 0x000A: // negate
                 cpu.alu.executeInstruction(new ALUOperations.NegOperation(), registerA, registerB, meta);
                 break;
@@ -62,7 +70,6 @@ public class ControlUnit {
                 break;
             
             case 0x0012: // swap
-                System.out.println(String.format("Swapping %d for %d", registerA.getValue(), registerB.getValue()));
                 short old = registerB.getValue();
                 registerB.setValue(registerA.getValue());
                 registerA.setValue(old);
@@ -86,6 +93,10 @@ public class ControlUnit {
             case 0x0019: // divide
             case 0x001A: // divide unsigned
                 cpu.alu.executeInstruction(new ALUOperations.DivOperation(), registerA, registerB, meta);
+                break;
+            
+            case 0x001B: // Sign extend lower byte
+                cpu.alu.executeInstruction(new ALUOperations.SignExtOperation(), registerA, registerB, meta);
                 break;
             
             case 0x001C: // complement
@@ -123,9 +134,43 @@ public class ControlUnit {
             case 0x0026: // Jump
                 cpu.setPC((short) (registerA.getValue() - 2));
                 break;
-            
-            case 0x0027: // Sign extend lower byte
-                cpu.alu.executeInstruction(new ALUOperations.SignExtOperation(), registerA, registerB, meta);
+
+            case 0x0027: // Branch equal
+                System.out.println("==");
+                if (ALU.statusRegister.getZero())
+                    cpu.setPC((short) (registerA.getValue() - 2));
+                break;
+
+            case 0x0028: // Branch not equal
+                System.out.println("!=");
+                if (!ALU.statusRegister.getZero())
+                    cpu.setPC((short) (registerA.getValue() - 2));
+                break;
+
+            case 0x0029: // Branch greater than
+                System.out.println(">");
+                if (!ALU.statusRegister.getNegative() && !ALU.statusRegister.getZero())
+                    cpu.setPC((short) (registerA.getValue() - 2));
+                break;
+
+            case 0x002A: // Branch less than
+                System.out.println("<");
+                if (ALU.statusRegister.getNegative() && !ALU.statusRegister.getZero())
+                    cpu.setPC((short) (registerA.getValue() - 2));
+                break;
+
+            case 0x002B: // Branch greater than or equal
+                System.out.println(">=");
+                if (!ALU.statusRegister.getNegative() || ALU.statusRegister.getZero())
+                    cpu.setPC((short) (registerA.getValue() - 2));
+                break;
+
+            case 0x002C: // Branch less than or equal
+                System.out.println("<=");
+                if (ALU.statusRegister.getNegative() || ALU.statusRegister.getZero()) {
+                    cpu.setPC((short) (registerA.getValue() - 2));
+                    ALU.statusRegister.printStatus();
+                }
                 break;
             
             case 0x003F: // halt and yield to operating system
