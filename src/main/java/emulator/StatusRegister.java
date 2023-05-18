@@ -45,7 +45,7 @@ public class StatusRegister {
         if (signed && (value.result < 0 || value.result > 0x7FFF)) {
             negative = true;
         }
-
+        
         if (value.overflow && signed)
             overflow = true;
         else if (value.overflow)

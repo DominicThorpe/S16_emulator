@@ -10,7 +10,15 @@ public class TestCtrlUnit {
     @Test
     public void testConditionalBranch() {
         // test branch equal, not equal, greater than, less than, greater equal, less equal
+        // zero, not zero
         CPU cpu = new CPU("src/test/sse/test_branching.sse");
+        assertEquals(cpu.regFile.getRegister(2, true, true), 100);
+    }
+
+    @Test 
+    public void testOverflowCarryJump() {
+        // test branch overflow and branch carry
+        CPU cpu = new CPU("src/test/sse/test_jovf_cry.sse");
         assertEquals(cpu.regFile.getRegister(2, true, true), 100);
     }
 

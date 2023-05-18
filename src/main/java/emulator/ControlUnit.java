@@ -57,7 +57,6 @@ public class ControlUnit {
             
             case 0x0009: // compare and set flags, do not mutate registers
                 OperationResult result = new ALUOperations.SubOperation().performOperation(registerA.getValue(), registerB.getValue());
-                System.out.println("Result: " + result.result);
                 ALU.statusRegister.setFlagsForValue(result, true);
                 break;
             
@@ -136,41 +135,55 @@ public class ControlUnit {
                 break;
 
             case 0x0027: // Branch equal
-                System.out.println("==");
                 if (ALU.statusRegister.getZero())
                     cpu.setPC((short) (registerA.getValue() - 2));
                 break;
 
             case 0x0028: // Branch not equal
-                System.out.println("!=");
                 if (!ALU.statusRegister.getZero())
                     cpu.setPC((short) (registerA.getValue() - 2));
                 break;
 
             case 0x0029: // Branch greater than
-                System.out.println(">");
                 if (!ALU.statusRegister.getNegative() && !ALU.statusRegister.getZero())
                     cpu.setPC((short) (registerA.getValue() - 2));
                 break;
 
             case 0x002A: // Branch less than
-                System.out.println("<");
                 if (ALU.statusRegister.getNegative() && !ALU.statusRegister.getZero())
                     cpu.setPC((short) (registerA.getValue() - 2));
                 break;
 
             case 0x002B: // Branch greater than or equal
-                System.out.println(">=");
                 if (!ALU.statusRegister.getNegative() || ALU.statusRegister.getZero())
                     cpu.setPC((short) (registerA.getValue() - 2));
                 break;
 
             case 0x002C: // Branch less than or equal
-                System.out.println("<=");
-                if (ALU.statusRegister.getNegative() || ALU.statusRegister.getZero()) {
+                if (ALU.statusRegister.getNegative() || ALU.statusRegister.getZero())
                     cpu.setPC((short) (registerA.getValue() - 2));
-                    ALU.statusRegister.printStatus();
+                break;
+
+            case 0x002D: // Branch if register zero
+                if (registerA.getValue() == 0)
+                    cpu.setPC((short) (registerB.getValue() - 2));
+                break;
+
+            case 0x002E: // Branch if register not zero
+                if (registerA.getValue() != 0)
+                    cpu.setPC((short) (registerB.getValue() - 2));
+                break;
+            
+            case 0x002F: // Branch if overflow flag set
+                ALU.statusRegister.printStatus();
+                if (ALU.statusRegister.getOverflow()) {
+                    cpu.setPC((short) (registerA.getValue() - 2));
                 }
+                break;
+
+            case 0x0030: // Branch if carry flag set
+                if (ALU.statusRegister.getCarry())
+                    cpu.setPC((short) (registerA.getValue() - 2));
                 break;
             
             case 0x003F: // halt and yield to operating system
