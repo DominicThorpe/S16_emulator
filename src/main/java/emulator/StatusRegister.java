@@ -11,6 +11,7 @@ public class StatusRegister {
     private boolean zero = false; // result was zero
     private boolean negative = false; // result was negative
     private boolean interrupt = false; // currently running an interrupt service routine
+    private boolean interruptEnabled = false; // interrupts are enabled
 
 
     /**
@@ -22,6 +23,7 @@ public class StatusRegister {
         zero = false;
         negative = false;
         interrupt = false;
+        interruptEnabled = false;
     }
 
 
@@ -62,6 +64,7 @@ public class StatusRegister {
         System.out.println("Zero:      " + zero);
         System.out.println("Negative:  " + negative);
         System.out.println("Interrupt: " + interrupt);
+        System.out.println("Intr Enbl: " + interruptEnabled);
     }
 
 
@@ -152,5 +155,17 @@ public class StatusRegister {
      */
     public void setInterrupt(boolean value) {
         interrupt = value;
+    }
+
+
+    /** Enables interrupts by setting interrupts enabled flag */
+    public void enableInterrupts() {
+        interruptEnabled = true;
+    }
+
+
+    /** Disables interrupts by clearing interrupts enabled flag */
+    public void disableInterrupts() {
+        interruptEnabled = false;
     }
 }

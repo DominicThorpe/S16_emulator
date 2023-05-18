@@ -186,6 +186,22 @@ public class ControlUnit {
                     cpu.setPC((short) (registerA.getValue() - 2));
                 break;
             
+            case 0x0031: // Set carry flag
+                ALU.statusRegister.setCarry(true);
+                break;
+
+            case 0x0032: // Clear carry flag
+                ALU.statusRegister.setCarry(false);
+                break;
+            
+            case 0x0033: // Set interrupts enabled flag
+                ALU.statusRegister.enableInterrupts();
+                break;
+
+            case 0x0034: // Clear interrupts enabled flag
+                ALU.statusRegister.disableInterrupts();
+                break;
+            
             case 0x003F: // halt and yield to operating system
                 break;
 
