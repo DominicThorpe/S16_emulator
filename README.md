@@ -8,6 +8,6 @@ The microprocessor still needs the following instructions to be implemented:
  - Input and output
  - Load and store to/from RAM
  - Call and return subroutine
- - Jumps and conditional branching
+ - Conditional branching
  - Enable and disable interrupts
  - Call and return from interrupts

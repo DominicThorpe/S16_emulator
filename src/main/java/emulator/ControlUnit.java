@@ -120,6 +120,10 @@ public class ControlUnit {
                 registerA.setValue((short) 0);
                 break;
             
+            case 0x0026: // Jump
+                cpu.setPC((short) (registerA.getValue() - 2));
+                break;
+            
             case 0x0027: // Sign extend lower byte
                 cpu.alu.executeInstruction(new ALUOperations.SignExtOperation(), registerA, registerB, meta);
                 break;

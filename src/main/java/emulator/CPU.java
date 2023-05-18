@@ -40,12 +40,11 @@ public class CPU {
 
         readFileToRAM(sourceFile);
 
-        while (programCounter < 0xC000) {
+        while (programCounter < 0x9000) {
             instrRegister.setValue((short) (ram.getValue(programCounter) << 8 | ram.getValue((short) (programCounter + 1)) & 0x00FF));
             if ((instrRegister.getValue() & 0xFC00) == 0xFC00) { // break loop if HALT detected
                 break;
             }
-
             controlUnit.executeInstruction(this, instrRegister.getValue());
             
             programCounter += 2;
@@ -101,7 +100,6 @@ public class CPU {
                 }
 
                 // insert the value into RAM and increment the address to write to
-                System.out.println(String.format("0x%04X", positionInRAM));
                 this.ram.setValue(positionInRAM, bytes[i]);
                 positionInRAM++;
             }

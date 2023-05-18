@@ -6,9 +6,9 @@ package emulator;
  */
 public class RAM {
     /** Starting address of the data section */
-    public final short data_section = 0x5800;
+    public final short code_section = 0x5800;
     /** Starting address of the code section */
-    public final short code_section = (short)0x9000;
+    public final short data_section = (short)0x9000;
 
     private byte[] memory = new byte[0xFFFF];
 
