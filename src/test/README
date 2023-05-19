@@ -1,0 +1,8 @@
+java/sim16_emulator - Classes containing the unit tests of the codebase
+sse - the assembled files used to unit test the code, binary format
+asm - the unassembled asm files which the binaries in test/sse come from, used for reassembly and documentation
+
+
+Known gaps in testing:
+ - Most tests now only handle cases when using full, 16-bit registers. Need to add tests for the split registers
+ - Need to add testing for the RAM
