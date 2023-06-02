@@ -56,8 +56,8 @@ public class ControlUnit {
                 break;
             
             case 0x0009: // compare and set flags, do not mutate registers
-                OperationResult result = new ALUOperations.SubOperation().performOperation(registerA.getValue(), registerB.getValue());
-                ALU.statusRegister.setFlagsForValue(result, true);
+                OperationResult result = new ALUOperations.SubOperation().performOperation(registerA.getValue(), registerB.getValue(), (meta & 0b1100) == 0b1100);
+                ALU.statusRegister.setFlagsForValue(result, true, (meta & 0b1100) == 0b1100);
                 break;
             
             case 0x000A: // negate

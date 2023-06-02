@@ -40,17 +40,21 @@ public class ALU {
         
         short argA = getOperand(destination, high, low); 
         short argB = getOperand(target, high, low);
+
+        if (high && !low) {
+            argA = (short) (argA >> 8);
+            argB = (short) (argB >> 8);
+        }
         
-        ALUOperations.OperationResult result = operation.performOperation(argA, argB);
+        ALUOperations.OperationResult result = operation.performOperation(argA, argB, (high && low));
         short shortResult = result.result;
         if (setFlags)
-            statusRegister.setFlagsForValue(result, signed);
+            statusRegister.setFlagsForValue(result, signed, (high && low));
 
         if (high && low)
             destination.setValue(shortResult);
         else if (destination instanceof SplitRegister) {
             SplitRegister splitDest = (SplitRegister)destination;
-
             if (high)
                 splitDest.setHighValue(shortResult);
             else if (low)
@@ -74,8 +78,16 @@ public class ALU {
             return register.getValue();
 
         // if destination is a split register get high and/or low byte depending on the flags
+        // and then sign extend if it it the lower byte
         else if (register instanceof SplitRegister) { 
             SplitRegister splitDest = (SplitRegister)register;
+
+            // return sign extended lower byte if only getting the lower byte
+            if (low && !high && ((splitDest.getLowValue() & (0x0080)) == 0))
+                return (short) (low ? splitDest.getLowValue() : 0);
+            else if (low && !high)
+                return (short) (0xFF00 | (low ? splitDest.getLowValue() : 0));
+            
             return (short) ((high ? splitDest.getHighValue() : 0) | (low ? splitDest.getLowValue() : 0));
         } 
         

@@ -38,6 +38,6 @@ public class SplitRegister extends Register {
      * @param newValue The new value of the lower 8 bits, remaining bits in the new value are discarded
      */
     public void setLowValue(short newValue) {
-        this.value = (short) (newValue | (this.value & 0xFF00));
+        this.value = (short) ((newValue & 0x00FF) | (this.value & 0xFF00));
     }
 }

@@ -35,18 +35,18 @@ public class StatusRegister {
      * @param value The value to set flags for
      * @param expected The value if there is no overflow
      * @param signed True if the operation was signed, otherwise false
+     * @param isWord True if the value is 16 bits; false if it is 8 bits
      */
-    public void setFlagsForValue(OperationResult value, boolean signed) {
+    public void setFlagsForValue(OperationResult value, boolean signed, boolean isWord) {
         resetFlags();
         if (value.result == 0) {
             zero = true;
         }
 
-        // set negative if value is negative or exceeds upper limit of a 2s-complement 16-bit number
+        // set negative if value is negative or exceeds upper limit of a 2s-complement 8 or 16-bit number
         // and operation is signed
-        if (signed && (value.result < 0 || value.result > 0x7FFF)) {
+        if (signed && ((isWord && ((short) value.result < 0)) || (!isWord && ((byte) value.result < 0)))) 
             negative = true;
-        }
         
         if (value.overflow && signed)
             overflow = true;

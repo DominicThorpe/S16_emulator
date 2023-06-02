@@ -2,7 +2,7 @@ package ALUOperations;
 
 public class SignExtOperation implements ALUOperation {
     @Override
-    public OperationResult performOperation(int operandA, int operandB) {
+    public OperationResult performOperation(int operandA, int operandB, boolean isWord) {
         // if the sign bit of the lower byte is 0, set the upper byte to 0x0000, else set it to 0xFFFF
         if ((operandA & 0x0080) == 0)
             return new OperationResult((short) (operandA & 0x00FF), false);
